@@ -16,6 +16,11 @@ class HashTable:
 
     Implement this.
     """
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.storage = [None] * capacity
+        # self.initial_capacity = capacity
+
 
     def fnv1(self, key):
         """
@@ -24,12 +29,12 @@ class HashTable:
         Implement this, and/or DJB2.
         """
 
-    def djb2(self, key):
-        """
-        DJB2 32-bit hash function
+    def djb2(self, key):                                                                                                                               
+        hash = 5381
+        for x in key:
+            hash = (( hash << 5) + hash) + ord(x)
+        return hash & 0xFFFFFFFF
 
-        Implement this, and/or FNV-1.
-        """
 
     def hash_index(self, key):
         """
@@ -40,6 +45,8 @@ class HashTable:
         return self.djb2(key) % self.capacity
 
     def put(self, key, value):
+        index = self.hash_index(key)
+        self.storage[index] = value
         """
         Store the value with the given key.
 
@@ -56,8 +63,12 @@ class HashTable:
 
         Implement this.
         """
+        index = self.hash_index(key)
+        self.storage[index] = None
 
     def get(self, key):
+        index = self.hash_index(key)
+        return self.storage[index]
         """
         Retrieve the value stored with the given key.
 
